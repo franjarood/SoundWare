@@ -1,5 +1,7 @@
 package modelo.usuarios;
 
+import modelo.contenido.Contenido;
+
 import java.util.Date;
 
 public abstract class Usuario {
@@ -103,6 +105,7 @@ public abstract class Usuario {
     public boolean validarPassword(){
         return true;
     }
+
 
 
 
