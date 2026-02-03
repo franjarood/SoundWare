@@ -1,12 +1,24 @@
 package modelo.usuarios;
 
-public class UsuarioPremium {
+import modelo.contenido.Contenido;
+
+import java.util.ArrayList;
+
+public class UsuarioPremium extends Usuario {
+
 
     private boolean descargasOffline;
     private int maxDescargas;
-    private descargados ArrayList<Contenido>;
+    private ArrayList<Contenido> descargados;
     private String calidadAudio;
 
+
+    private static final int MAX_DESCARGAS_DEFAULT = 100;
+
+
+
+
+    /*
     public UsuarioPremium(boolean descargasOffline, int maxDescargas, descargados arrayList, String calidadAudio) {
         this.descargasOffline = descargasOffline;
         this.maxDescargas = maxDescargas;
@@ -56,6 +68,6 @@ public class UsuarioPremium {
     public boolean verificarEspacioDescarga(){
         return false;
     };
-
+*/
 
 }

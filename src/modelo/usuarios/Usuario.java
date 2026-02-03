@@ -1,7 +1,10 @@
 package modelo.usuarios;
 
+import enums.TipoSuscripcion;
 import modelo.contenido.Contenido;
+import modelo.plataforma.Playlist;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Usuario {
@@ -10,22 +13,16 @@ public abstract class Usuario {
     private String nombre;
     private String email;
     private String password;
-    private Suscripcion TipoSuscripcion;
-    private misPlaylists ArrayList<Playlists>;
-    private historial ArrayList<Contenido>;
+    private TipoSuscripcion suscripcion;
+    private ArrayList<Playlist> misPlaylists;
+    private ArrayList<Contenido> historial;
     private Date fechaRegistro;
+    private ArrayList<Playlist> playlistsSeguidas;
+    private ArrayList<Contenido> contenidosLiked;
 
-    public Usuario(String id, String nombre, String email, String password, Suscripcion tipoSuscripcion, misPlaylists arrayList, historial arrayList1, Date fechaRegistro) {
-        this.id = id;
-        this.nombre = nombre;
-        this.email = email;
-        this.password = password;
-        TipoSuscripcion = tipoSuscripcion;
-        ArrayList = arrayList;
-        ArrayList = arrayList1;
-        this.fechaRegistro = fechaRegistro;
-    }
 
+
+/*
     public String getId() {
         return id;
     }
@@ -109,10 +106,10 @@ public abstract class Usuario {
 
 
 
+estaba hecho, hacer de nuevo
 
 
 
-
-
+*/
 
 }
