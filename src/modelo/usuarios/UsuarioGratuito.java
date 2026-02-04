@@ -2,21 +2,23 @@ package modelo.usuarios;
 
 import java.util.Date;
 
-public class UsuarioGratuito {
+public class UsuarioGratuito extends Usuario {
 
     private int anunciosEscuchados;
     private Date ultimoAnuncio;
     private int reproduccionesHoy;
     private int limiteReproducciones;
     private int cancionesSinAnuncio;
+    private Date fechaUltimaReproduccion;
 
-    public UsuarioGratuito(int anunciosEscuchados, Date ultimoAnuncio, int reproduccionesHoy, int limiteReproducciones, int cancionesSinAnuncio) {
-        this.anunciosEscuchados = anunciosEscuchados;
-        this.ultimoAnuncio = ultimoAnuncio;
-        this.reproduccionesHoy = reproduccionesHoy;
-        this.limiteReproducciones = limiteReproducciones;
-        this.cancionesSinAnuncio = cancionesSinAnuncio;
-    }
+
+    private static final int LIMITE_DIARIO = 50;
+    private static final int CANCIONES_ENTRE_ANUNCIOS = 3;
+
+
+
+
+   /*
 
 
 
@@ -71,8 +73,8 @@ public class UsuarioGratuito {
 
     public void reiniciarContadorDiario(){};
 
-
-
+    revisar esto de arriba
+    */
 
 
 

@@ -17,4 +17,8 @@ public enum CategoriaPodcast {
     private String nombre;
     private String descripcion;
 
+    CategoriaPodcast(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
 }

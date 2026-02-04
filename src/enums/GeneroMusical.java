@@ -19,4 +19,8 @@ public enum GeneroMusical {
     private String nombre;
     private String descripcion;
 
+    GeneroMusical(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
 }

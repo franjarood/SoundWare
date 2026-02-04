@@ -1,5 +1,6 @@
 package interfaces;
 
+import excepciones.descarga.ContenidoYaDescargadoException;
 import excepciones.descarga.LimiteDescargasException;
 
 public interface iDescargable {
