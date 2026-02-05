@@ -1,6 +1,7 @@
 package modelo.contenido;
 
 import enums.CategoriaPodcast;
+import excepciones.contenido.ContenidoNoDisponibleException;
 import interfaces.iDescargable;
 import interfaces.iReproducible;
 import modelo.artistas.Creador;
@@ -27,5 +28,14 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
 
 
 
+    @Override
+    public void reproducir() throws ContenidoNoDisponibleException {
+
+        if (!disponible) {
+            throw new ContenidoNoDisponibleException("El contenido no está disponible");
+        }
+        reproducciones++;
+        reproduciendo = true;
+    }
 
 }

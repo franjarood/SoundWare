@@ -7,4 +7,20 @@ public enum AlgoritmoRecomendacion {
 
     private String descripcion;
 
+
+    AlgoritmoRecomendacion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+
+    @Override
+    public String toString() {
+        return name() + " (Descripción: " + descripcion + ")";
+    }
+
 }

@@ -1,5 +1,8 @@
 package modelo.contenido;
 
+import excepciones.contenido.ContenidoNoDisponibleException;
+import excepciones.contenido.DuracionInvalidaException;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,6 +16,57 @@ public abstract class Contenido {
     protected ArrayList<String> tags;
     protected boolean disponible;
     protected Date fechaPublicacion;
+
+
+    public Contenido(String titulo, int duracionSegundos) throws DuracionInvalidaException {
+
+        this.duracionSegundos = duracionSegundos;
+        validarDuracion();
+
+        this.id = java.util.UUID.randomUUID().toString();
+        this.titulo = titulo;
+
+
+        this.reproducciones = 0;
+        this.likes = 0;
+        this.disponible = true;
+        this.tags = new ArrayList<>();
+        this.fechaPublicacion = new Date();
+    }
+
+    public abstract void reproducir() throws ContenidoNoDisponibleException;
+
+    public void aumentarReproducciones() {
+        this.reproducciones++;
+    }
+
+    public void agregarLike(){
+        this.likes++;
+    }
+
+    public boolean esPopular() {
+        return reproducciones > 100000;
+    }
+    public void validarDuracion() throws DuracionInvalidaException {
+        if (duracionSegundos <= 0) {
+            throw new DuracionInvalidaException("La duración debe ser mayor que 0 segundos");
+        }
+    }
+
+    public void agregarTag(String tag) {
+        if (tag != null && !tags.isEmpty() && !tags.contains(tag)) {
+            tags.add(tag.toLowerCase());
+        }
+    }
+
+
+
+
+
+
+
+
+
 
 
 

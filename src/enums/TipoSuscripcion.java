@@ -14,16 +14,36 @@ public enum TipoSuscripcion {
     private boolean descargasOffline;
 
 
+    TipoSuscripcion(double precioMensual, boolean sinAnuncios, int limiteReproducciones, boolean descargasOffline) {
+        this.precioMensual = precioMensual;
+        this.sinAnuncios = sinAnuncios;
+        this.limiteReproducciones = limiteReproducciones;
+        this.descargasOffline = descargasOffline;
+    }
+
+
+    public double getPrecioMensual() {
+        return precioMensual;
+    }
+
+    public boolean isSinAnuncios() {
+        return sinAnuncios;
+    }
+
+    public int getLimiteReproducciones() {
+        return limiteReproducciones;
+    }
+
+    public boolean isDescargasOffline() {
+        return descargasOffline;
+    }
+
+    public boolean tieneReproduccionesIlimitadas() {
+        return limiteReproducciones == -1;
+    }
 
 
 
-
-
-
-
-
-
-//Copiado de sergio
     @Override
     public String toString() {
         return name() + " (Precio: $" + precioMensual + "/mes)";

@@ -1,5 +1,6 @@
 package modelo.contenido;
 import enums.GeneroMusical;
+import excepciones.contenido.ContenidoNoDisponibleException;
 import interfaces.iReproducible;
 import interfaces.iDescargable;
 import modelo.artistas.Album;
@@ -19,6 +20,21 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
     private boolean reproduciendo;
     private boolean pausado;
     private boolean descargado;
+
+
+
+
+
+    @Override
+    public void reproducir() throws ContenidoNoDisponibleException {
+
+        if (!disponible) {
+            throw new ContenidoNoDisponibleException();
+        }
+
+        reproducciones++;
+    }
+
 
 
 

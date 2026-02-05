@@ -17,4 +17,9 @@ public class EstadisticasCreador {
     private Podcast episodioMasPopular;
     private HashMap<Integer, Integer> episodiosPorTemporada;
 
+    public EstadisticasCreador(Creador creador) {
+        this.creador = creador;
+        this.episodiosPorTemporada = new HashMap<>();
+        calcularEstadisticas();
+    }
 }
