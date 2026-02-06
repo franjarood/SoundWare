@@ -45,10 +45,11 @@ public abstract class Contenido {
     }
 
     public boolean esPopular() {
-        return reproducciones > 100000;
+        return this.reproducciones > 100000;
     }
+
     public void validarDuracion() throws DuracionInvalidaException {
-        if (duracionSegundos <= 0) {
+        if (this.duracionSegundos <= 0) {
             throw new DuracionInvalidaException("La duración debe ser mayor que 0 segundos");
         }
     }
@@ -58,6 +59,30 @@ public abstract class Contenido {
             tags.add(tag.toLowerCase());
         }
     }
+
+    public boolean tieneTag(String tag) {
+        return tag != null && tags.contains(tag.toLowerCase());
+    }
+
+    public void marcarNoDisponible() {
+        this.disponible = false;
+    }
+
+    public void marcarDisponible() {
+        this.disponible = true;
+    }
+
+    // Formatear la duración en formato "M:SS"
+    public String getDuracionFormateada() {
+        int minutos = duracionSegundos / 60;
+        int segundos = duracionSegundos % 60;
+        return String.format("%d:%02d", minutos, segundos);
+    }
+
+
+
+
+
 
 
 
