@@ -80,25 +80,94 @@ public abstract class Contenido {
     }
 
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public String getTitulo() {
+        return titulo;
+    }
 
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
 
+    public int getReproducciones() {
+        return reproducciones;
+    }
 
+    public void setReproducciones(int reproducciones) {
+        this.reproducciones = reproducciones;
+    }
 
+    public int getLikes() {
+        return likes;
+    }
 
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 
+    public int getDuracionSegundos() {
+        return duracionSegundos;
+    }
 
+    public void setDuracionSegundos(int duracionSegundos) {
+        this.duracionSegundos = duracionSegundos;
+    }
 
+    //COPIA DEFENSIVA
+    public ArrayList<String> getTags() {
+        return new ArrayList<>(tags);
+    }
 
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
+    }
 
+    public boolean isDisponible() {
+        return disponible;
+    }
 
+    public void setDisponible(boolean disponible) {
+        this.disponible = disponible;
+    }
 
+    public Date getFechaPublicacion() {
+        return fechaPublicacion;
+    }
 
+    public void setFechaPublicacion(Date fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
+    }
 
+    @Override
+    public String toString() {
+        return titulo + " [" + getDuracionFormateada() + "]";
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Contenido oontenido = (Contenido) obj;
 
+        return id.equals(oontenido.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 
 
 
