@@ -163,11 +163,13 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
     public void reproducir() throws ContenidoNoDisponibleException {
 
         if (!disponible) {
-            throw new ContenidoNoDisponibleException("La canción no está disponible");
+            throw new ContenidoNoDisponibleException("El contenido no está disponible");
         }
 
-        reproducciones++;
+        aumentarReproducciones();
+        reproduciendo = true;
     }
+
 
     // Implementación de iReproducible
     @Override
@@ -219,10 +221,9 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
 
     @Override
     public int espacioRequerido() {
-        return getDuracionSegundos() / 10;
+        //Aproximacion: 1MB por cada 60 segundos de audio
+        return (duracionSegundos / 60) + 1;
     }
-
-
 
 
 
