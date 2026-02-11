@@ -79,20 +79,14 @@ public class Artista {
     // Devuelve las canciones más reproducidas
     public ArrayList<Cancion> obtenerTopCanciones(int cantidad) {
 
-        ArrayList<Cancion> copia = new ArrayList<>(discografia);
+        ArrayList<Cancion> ordenadas = new ArrayList<>(discografia);
 
-        copia.sort((c1, c2) ->
-                Integer.compare(c2.getReproducciones(), c1.getReproducciones()));
+        ordenadas.sort((c1, c2) -> c2.getReproducciones() - c1.getReproducciones());
 
-        if (cantidad < 0) {
-            cantidad = 0;
+        if (cantidad >= ordenadas.size() ) {
+            return ordenadas;
         }
-
-        if (cantidad > copia.size()) {
-            cantidad = copia.size();
-        }
-
-        return new ArrayList<>(copia.subList(0, cantidad));
+        return new ArrayList<>(ordenadas.subList(0, cantidad));
     }
 
 
