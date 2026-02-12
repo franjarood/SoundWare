@@ -51,15 +51,18 @@ public class Album {
             throws AlbumCompletoException, DuracionInvalidaException {
 
         if (canciones.size() >= MAX_CANCIONES) {
-            throw new AlbumCompletoException();
+            throw new AlbumCompletoException("El álbum ya tiene el número máximo de " + MAX_CANCIONES + " canciones permitido.");
         }
 
-        Cancion cancion = new Cancion(titulo, duracionSegundos, artista, genero);
+        Cancion cancion = new Cancion(titulo, duracionSegundos, this.artista, genero);
 
         cancion.setAlbum(this);
 
         canciones.add(cancion);
 
+        if (artista != null) {
+            artista.publicarCancion(cancion);
+        }
         return cancion;
     }
 
@@ -86,18 +89,21 @@ public class Album {
     public void eliminarCancion(int posicion) throws CancionNoEncontradaException {
 
         if (posicion < 1 || posicion > canciones.size()) {
-            throw new CancionNoEncontradaException();
+            throw new CancionNoEncontradaException("No existe una canción en la posición especificada.");
         }
 
-        canciones.remove(posicion - 1);
+        Cancion cancion = canciones.remove(posicion - 1);
+        cancion.setAlbum(null);
     }
 
 
     public void eliminarCancion(Cancion cancion) throws CancionNoEncontradaException {
 
         if (!canciones.remove(cancion)) {
-            throw new CancionNoEncontradaException();
+            throw new CancionNoEncontradaException("La cancion no existe en el album");
         }
+        canciones.remove(cancion);
+        cancion.setAlbum(null);
     }
 
 
@@ -116,10 +122,12 @@ public class Album {
     public String getDuracionTotalFormateada() {
 
         int total = getDuracionTotal();
-
-        int minutos = total / 60;
+        int horas = total / 3600;
+        int minutos = (total % 3600) / 60;
         int segundos = total % 60;
-
+        if (horas > 0) {
+            return String.format("%d:%02d:%02d", horas, minutos, segundos);
+        }
         return String.format("%d:%02d", minutos, segundos);
     }
 
