@@ -60,6 +60,8 @@ public abstract class Usuario {
 
 
 
+
+
     // Crear playlist privada del usuario
     public Playlist crearPlaylist(String nombrePlaylist) {
 
@@ -70,7 +72,7 @@ public abstract class Usuario {
         Playlist nueva = new Playlist(nombrePlaylist, this);
 
         // privada por defecto
-        nueva.setPublica(false);
+        nueva.setEsPublica(false);
 
         misPlaylists.add(nueva);
 
@@ -83,7 +85,7 @@ public abstract class Usuario {
 
         if (playlist == null) return;
 
-        if (playlist.isPublica() && !playlistsSeguidas.contains(playlist)) {
+        if (playlist.isEsPublica() && !playlistsSeguidas.contains(playlist)) {
             playlistsSeguidas.add(playlist);
         }
     }
@@ -136,6 +138,7 @@ public abstract class Usuario {
     public boolean validarPassword() throws PasswordDebilException {
 
         if (password == null || password.length() < 8) {
+
             throw new PasswordDebilException("La contraseña debe tener al menos 8 caracteres");
         }
 
@@ -143,7 +146,7 @@ public abstract class Usuario {
     }
 
 
-    // Agregar al historial con límite
+    // Agregar contenido al historial (con límite)
     public void agregarAlHistorial(Contenido contenido) {
 
         if (contenido == null) return;
@@ -153,6 +156,7 @@ public abstract class Usuario {
         historial.add(contenido);
 
         if (historial.size() > LIMITE) {
+
             historial.remove(0); // elimina el más antiguo
         }
     }
@@ -165,11 +169,12 @@ public abstract class Usuario {
     }
 
 
-    // Indica si es premium (no gratuito)
+    // Indica si el usuario es premium (no gratuito)
     public boolean esPremium() {
 
         return suscripcion != TipoSuscripcion.GRATUITO;
     }
+
 
 
 
