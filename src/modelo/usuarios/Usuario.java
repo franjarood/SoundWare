@@ -87,6 +87,7 @@ public abstract class Usuario {
 
         if (playlist.isEsPublica() && !playlistsSeguidas.contains(playlist)) {
             playlistsSeguidas.add(playlist);
+            playlist.incrementarSeguidores(); // coherente con Playlist
         }
     }
 
@@ -96,7 +97,9 @@ public abstract class Usuario {
 
         if (playlist == null) return;
 
-        playlistsSeguidas.remove(playlist);
+        if (playlistsSeguidas.remove(playlist)) {
+            playlist.decrementarSeguidores(); // solo si realmente la dejaste de seguir
+        }
     }
 
 
@@ -107,6 +110,7 @@ public abstract class Usuario {
 
         if (!contenidosLiked.contains(contenido)) {
             contenidosLiked.add(contenido);
+            contenido.agregarLike(); // existe en Contenido según tu README
         }
     }
 
@@ -116,6 +120,7 @@ public abstract class Usuario {
 
         if (contenido == null) return;
 
+        // Quitamos de favoritos. No bajamos el contador global porque Contenido no tiene "quitarLike"
         contenidosLiked.remove(contenido);
     }
 
@@ -174,6 +179,122 @@ public abstract class Usuario {
 
         return suscripcion != TipoSuscripcion.GRATUITO;
     }
+
+
+    // GETTERS Y SETTERS
+
+
+    public String getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) throws EmailInvalidoException {
+        if (email == null
+                || !email.contains("@")
+                || !email.substring(email.indexOf("@")).contains(".")) {
+            throw new EmailInvalidoException("Formato de email inválido");
+        }
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) throws PasswordDebilException {
+        if (password == null || password.length() < 8) {
+            throw new PasswordDebilException("La contraseña debe tener al menos 8 caracteres");
+        }
+        this.password = password;
+    }
+
+    public TipoSuscripcion getSuscripcion() {
+        return suscripcion;
+    }
+
+    public void setSuscripcion(TipoSuscripcion suscripcion) {
+        this.suscripcion = suscripcion;
+    }
+
+    // COPIA DEFENSIVA
+    public ArrayList<Playlist> getMisPlaylists() {
+        return new ArrayList<>(misPlaylists);
+    }
+
+    // COPIA DEFENSIVA
+    public ArrayList<Contenido> getHistorial() {
+        return new ArrayList<>(historial);
+    }
+
+    // COPIA DEFENSIVA (Date es mutable)
+    public Date getFechaRegistro() {
+        return new Date(fechaRegistro.getTime());
+    }
+
+    // COPIA DEFENSIVA
+    public ArrayList<Playlist> getPlaylistsSeguidas() {
+        return new ArrayList<>(playlistsSeguidas);
+    }
+
+    // COPIA DEFENSIVA
+    public ArrayList<Contenido> getContenidosLiked() {
+        return new ArrayList<>(contenidosLiked);
+    }
+
+
+    // OVERRIDES
+
+
+    @Override
+    public String toString() {
+
+        return "Usuario: " + nombre +
+                " | Email: " + email +
+                " | Suscripción: " + suscripcion +
+                " | Playlists: " + misPlaylists.size() +
+                " | Historial: " + historial.size();
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Usuario otro = (Usuario) obj;
+
+        return id != null && id.equals(otro.id);
+    }
+
+
+    @Override
+    public int hashCode() {
+
+        return id != null ? id.hashCode() : 0;
+    }
+
+
+
+
+
 
 
 

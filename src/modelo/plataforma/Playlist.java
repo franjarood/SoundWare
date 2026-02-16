@@ -1,11 +1,16 @@
 package modelo.plataforma;
 
+import enums.CriterioOrden;
+import excepciones.playlist.ContenidoDuplicadoException;
+import excepciones.playlist.PlaylistLlenaException;
+import excepciones.playlist.PlaylistVaciaException;
 import modelo.contenido.Contenido;
 import modelo.usuarios.Usuario;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 public class Playlist {
 
@@ -24,9 +29,11 @@ public class Playlist {
 
 
     public Playlist(String nombre, Usuario creador) {
+        this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.creador = creador;
 
+        this.esPublica = false; // privada por defecto
         this.contenidos = new ArrayList<>();
         this.fechaCreacion = new Date();
         this.maxContenidos = MAX_CONTENIDOS_DEFAULT;
@@ -34,6 +41,7 @@ public class Playlist {
 
 
     public Playlist(String nombre, Usuario creador, boolean esPublica, String descripcion) {
+        this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.creador = creador;
         this.esPublica = esPublica;
@@ -47,9 +55,10 @@ public class Playlist {
 
     // MÉTODOS - PLAYLIST
 
-
     public void agregarContenido(Contenido contenido)
             throws PlaylistLlenaException, ContenidoDuplicadoException {
+
+        if (contenido == null) return;
 
         if (contenidos.size() >= maxContenidos) {
             throw new PlaylistLlenaException();
@@ -63,11 +72,14 @@ public class Playlist {
     }
 
 
+    // CORREGIDO: no borrar dentro de for-each
     public boolean eliminarContenido(String idContenido) {
 
-        for (Contenido c : contenidos) {
-            if (c.getId().equals(idContenido)) {
-                contenidos.remove(c);
+        if (idContenido == null) return false;
+
+        for (int i = 0; i < contenidos.size(); i++) {
+            if (contenidos.get(i).getId().equals(idContenido)) {
+                contenidos.remove(i);
                 return true;
             }
         }
@@ -81,18 +93,47 @@ public class Playlist {
     }
 
 
+    // CORREGIDO: solo criterios posibles con métodos de Contenido
     public void ordenarPor(CriterioOrden criterio) throws PlaylistVaciaException {
 
         if (contenidos.isEmpty()) {
             throw new PlaylistVaciaException();
         }
 
-        if (criterio == CriterioOrden.TITULO) {
-            contenidos.sort((a, b) -> a.getTitulo().compareToIgnoreCase(b.getTitulo()));
-        } else if (criterio == CriterioOrden.DURACION) {
-            contenidos.sort((a, b) -> Integer.compare(a.getDuracionSegundos(), b.getDuracionSegundos()));
-        } else if (criterio == CriterioOrden.POPULARIDAD) {
-            contenidos.sort((a, b) -> Integer.compare(b.getReproducciones(), a.getReproducciones()));
+        if (criterio == null) return;
+
+        switch (criterio) {
+
+            case ALFABETICO:
+                contenidos.sort((a, b) ->
+                        a.getTitulo().compareToIgnoreCase(b.getTitulo()));
+                break;
+
+            case DURACION:
+                contenidos.sort((a, b) ->
+                        Integer.compare(a.getDuracionSegundos(), b.getDuracionSegundos()));
+                break;
+
+            case POPULARIDAD:
+                contenidos.sort((a, b) ->
+                        Integer.compare(b.getReproducciones(), a.getReproducciones()));
+                break;
+
+            case FECHA_AGREGADO:
+                // En tu Contenido existe getFechaPublicacion (no getFechaAgregado)
+                contenidos.sort((a, b) ->
+                        a.getFechaPublicacion().compareTo(b.getFechaPublicacion()));
+                break;
+
+            case ALEATORIO:
+                Collections.shuffle(contenidos);
+                break;
+
+            case ARTISTA:
+                // No se puede ordenar por ARTISTA porque Playlist guarda Contenido
+                // y Contenido no tiene getArtista(). (Solo Cancion lo tiene)
+                // Lo dejamos sin hacer para no romper.
+                break;
         }
     }
 
@@ -134,6 +175,8 @@ public class Playlist {
     public ArrayList<Contenido> buscarContenido(String termino) {
 
         ArrayList<Contenido> resultado = new ArrayList<>();
+
+        if (termino == null) return resultado;
 
         for (Contenido c : contenidos) {
             if (c.getTitulo().toLowerCase().contains(termino.toLowerCase())) {
@@ -187,8 +230,7 @@ public class Playlist {
     }
 
 
-    //getters y setters
-
+    // GETTERS Y SETTERS
 
     public String getId() {
         return id;
@@ -285,19 +327,14 @@ public class Playlist {
 
         Playlist otra = (Playlist) obj;
 
-        return id.equals(otra.id);
+        return id != null && id.equals(otra.id);
     }
 
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
-
-
-
-
-
 
 
 

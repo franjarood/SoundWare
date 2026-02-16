@@ -68,7 +68,7 @@ public class Artista {
             }
         }
 
-        Album nuevoAlbum = new Album(titulo, fecha, this);
+        Album nuevoAlbum = new Album(titulo, this, fecha);
 
         albumes.add(nuevoAlbum);
 

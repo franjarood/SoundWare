@@ -1,7 +1,10 @@
 package modelo.artistas;
 
 import enums.CategoriaPodcast;
+import excepciones.artista.LimiteEpisodiosException;
+import excepciones.contenido.EpisodioNoEncontradoException;
 import modelo.contenido.Podcast;
+import utilidades.EstadisticasCreador;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +59,7 @@ public class Creador {
         int totalEpisodios = episodios.size();
         double promedio = calcularPromedioReproducciones();
 
-        return new EstadisticasCreador(totalReproducciones, totalEpisodios, promedio, suscriptores);
+        return new EstadisticasCreador(this);
     }
 
 

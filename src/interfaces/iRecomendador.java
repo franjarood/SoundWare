@@ -8,5 +8,5 @@ import java.util.ArrayList;
 
 public interface iRecomendador {
     ArrayList<Contenido> recomendar(Usuario usuario) throws RecomendacionException;
-    ArrayList<Contenido> obtenerSimiliares(Contenido contenido)  throws RecomendacionException;
+    ArrayList<Contenido> obtenerSimilares(Contenido contenido)  throws RecomendacionException;
 }
