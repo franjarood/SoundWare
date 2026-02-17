@@ -25,6 +25,7 @@ public class Artista {
 
     // CONSTRUCTORES
 
+    // Crea un artista con datos básicos (nombre artístico, nombre real, país)
     public Artista(String nombreArtistico, String nombreReal, String paisOrigen) {
         this.nombreArtistico = nombreArtistico;
         this.nombreReal = nombreReal;
@@ -34,6 +35,7 @@ public class Artista {
         this.albumes = new ArrayList<>();
     }
 
+    // Crea un artista con datos completos incluyendo verificación y biografía
     public Artista(String nombreArtistico, String nombreReal, String paisOrigen, boolean verificado, String biografia) {
         this.nombreArtistico = nombreArtistico;
         this.nombreReal = nombreReal;

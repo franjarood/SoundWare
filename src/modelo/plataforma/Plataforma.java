@@ -524,60 +524,47 @@ public class Plataforma {
 
     // GETTERS Y SETTERS
 
-
     public String getNombre() {
         return nombre;
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia del catálogo para evitar modificaciones externas
     public ArrayList<Contenido> getCatalogo() {
         return new ArrayList<>(catalogo);
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia del mapa de artistas para evitar modificaciones externas
     public HashMap<String, Artista> getArtistas() {
         return new HashMap<>(artistas);
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia del mapa de creadores para evitar modificaciones externas
     public HashMap<String, Creador> getCreadores() {
         return new HashMap<>(creadores);
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia de la lista de anuncios para evitar modificaciones externas
     public ArrayList<Anuncio> getAnuncios() {
         return new ArrayList<>(anuncios);
     }
-
 
     public RecomendadorIA getRecomendador() {
         return recomendador;
     }
 
-
     public int getTotalUsuarios() {
         return usuarios.size();
     }
-
 
     public int getTotalContenido() {
         return catalogo.size();
     }
 
-
     public int getTotalAnunciosReproducidos() {
         return totalAnunciosReproducidos;
     }
 
-
-
-
-    // OVERRIDE
-
+    // OVERRIDES
 
     @Override
     public String toString() {
@@ -592,7 +579,6 @@ public class Plataforma {
                 ", anunciosReproducidos=" + totalAnunciosReproducidos +
                 '}';
     }
-
 
 
 }

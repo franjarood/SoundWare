@@ -13,8 +13,10 @@ import modelo.artistas.Creador;
 
 import java.util.ArrayList;
 
+// Podcast - Episodio de audio de un creador organizado por temporadas
 public class Podcast extends Contenido implements iReproducible, iDescargable {
 
+    // ATRIBUTOS
 
     private Creador creador;
     private int numeroEpisodio;
@@ -27,7 +29,9 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
     private boolean pausado;
     private boolean descargado;
 
+    // CONSTRUCTORES
 
+    // Crea un podcast con datos básicos (título, duración, creador, episodio, temporada, categoría)
     public Podcast(String titulo, int duracionSegundos, Creador creador, int numeroEpisodio, int temporada, CategoriaPodcast categoria) throws DuracionInvalidaException {
         super(titulo, duracionSegundos);
         this.creador = creador;
@@ -36,6 +40,7 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         this.categoria = categoria;
     }
 
+    // Crea un podcast con descripción adicional del episodio
     public Podcast(String titulo, int duracionSegundos, Creador creador, int numeroEpisodio, int temporada, CategoriaPodcast categoria, String descripcion) throws DuracionInvalidaException {
         super(titulo, duracionSegundos);
         this.creador = creador;
@@ -45,8 +50,9 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         this.descripcion = descripcion;
     }
 
+    // OVERRIDES - CONTENIDO
 
-    // Implementación de Contenido
+    // Reproduce el podcast aumentando el contador de reproducciones
     @Override
     public void reproducir() throws ContenidoNoDisponibleException {
 
@@ -58,6 +64,7 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         reproduciendo = true;
     }
 
+    // OVERRIDES - REPRODUCIBLE
 
     @Override
     public void play() {

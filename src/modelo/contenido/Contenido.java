@@ -23,6 +23,7 @@ public abstract class Contenido {
 
     // CONSTRUCTORES
 
+    // Crea contenido con título y duración, generando ID único y valores por defecto
     public Contenido(String titulo, int duracionSegundos) throws DuracionInvalidaException {
 
         this.duracionSegundos = duracionSegundos;

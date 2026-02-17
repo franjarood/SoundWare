@@ -31,6 +31,7 @@ public abstract class Usuario {
 
     // CONSTRUCTORES
 
+    // Crea un usuario validando email y contraseña, inicializando colecciones vacías
     public Usuario(String nombre, String email, String password, TipoSuscripcion suscripcion)
             throws EmailInvalidoException, PasswordDebilException {
 

@@ -30,6 +30,7 @@ public class Creador {
 
     // CONSTRUCTORES
 
+    // Crea un creador con nombre de canal y nombre personal
     public Creador(String nombreCanal, String nombre) {
         this.nombreCanal = nombreCanal;
         this.nombre = nombre;
@@ -39,6 +40,7 @@ public class Creador {
         this.categoriasPrincipales = new ArrayList<>();
     }
 
+    // Crea un creador con datos completos incluyendo descripción del canal
     public Creador(String nombreCanal, String nombre, String descripcion) {
         this.nombreCanal = nombreCanal;
         this.nombre = nombre;

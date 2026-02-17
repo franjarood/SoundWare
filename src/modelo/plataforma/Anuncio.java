@@ -20,19 +20,21 @@ public class Anuncio {
 
     // CONSTRUCTORES
 
+    // Crea un anuncio básico con empresa, tipo y presupuesto (activo por defecto)
     public Anuncio(String empresa, TipoAnuncio tipo, double presupuesto) {
         this.empresa = empresa;
         this.tipo = tipo;
         this.presupuesto = presupuesto;
-        this.activo = true; // Los anuncios se crean activos por defecto
+        this.activo = true;
     }
 
+    // Crea un anuncio con URL de audio personalizada
     public Anuncio(String empresa, TipoAnuncio tipo, double presupuesto, String audioURL) {
         this.empresa = empresa;
         this.tipo = tipo;
         this.presupuesto = presupuesto;
         this.audioURL = audioURL;
-        this.activo = true; // Los anuncios se crean activos por defecto
+        this.activo = true;
     }
 
     // MÉTODOS PÚBLICOS

@@ -29,6 +29,7 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
 
     // CONSTRUCTORES
 
+    // Crea una canción con datos básicos (título, duración, artista, género)
     public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero) throws DuracionInvalidaException {
         super(titulo, duracionSegundos);
         this.artista = artista;
@@ -37,6 +38,7 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         this.ISRC = generarISRC();
     }
 
+    // Crea una canción con datos completos incluyendo letra y contenido explícito
     public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero,
                    String letra, boolean explicit) throws DuracionInvalidaException {
 

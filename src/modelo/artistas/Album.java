@@ -30,6 +30,7 @@ public class Album {
 
     // CONSTRUCTORES
 
+    // Crea un álbum con datos básicos (título, artista, fecha)
     public Album(String titulo, Artista artista, Date fechaLanzamiento) {
         this.titulo = titulo;
         this.artista = artista;
@@ -38,6 +39,7 @@ public class Album {
         this.canciones = new ArrayList<>();
     }
 
+    // Crea un álbum con datos completos incluyendo discográfica y tipo
     public Album(String titulo, Artista artista, Date fechaLanzamiento, String discografica, String tipoAlbum) {
         this.titulo = titulo;
         this.artista = artista;

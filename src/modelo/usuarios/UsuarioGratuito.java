@@ -30,6 +30,7 @@ public class UsuarioGratuito extends Usuario {
 
     // CONSTRUCTORES
 
+    // Crea un usuario gratuito con límites (50 reproducciones/día, anuncios cada 3 canciones)
     public UsuarioGratuito(String nombre, String email, String password)
             throws EmailInvalidoException, PasswordDebilException {
 
