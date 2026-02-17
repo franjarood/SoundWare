@@ -1,18 +1,23 @@
 package enums;
 
+// TipoSuscripcion - Tipos de suscripción disponibles en la plataforma
+// Define las características y restricciones de cada tipo de cuenta
+// Los usuarios pueden ser gratuitos (con límites) o de pago (sin límites)
 public enum TipoSuscripcion {
 
-    GRATUITO(0.0, false, 50, false),
-    PREMIUM(9.99, true, -1, true),
-    FAMILIAR(14.99, true, -1, true),
-    ESTUDIANTE(4.99, true, -1, true);
+    GRATUITO(0.0, false, 50, false),        // Gratis, con anuncios, 50 reproducciones/día, sin descargas
+    PREMIUM(9.99, true, -1, true),          // $9.99/mes, sin anuncios, ilimitado, con descargas
+    FAMILIAR(14.99, true, -1, true),        // $14.99/mes, plan familiar, sin anuncios, ilimitado
+    ESTUDIANTE(4.99, true, -1, true);       // $4.99/mes, descuento estudiantes, sin anuncios, ilimitado
 
+    // ATRIBUTOS
 
-    private double precioMensual;
-    private boolean sinAnuncios;
-    private int limiteReproducciones;
-    private boolean descargasOffline;
+    private double precioMensual;           // Costo mensual de la suscripción
+    private boolean sinAnuncios;            // Si escucha anuncios o no
+    private int limiteReproducciones;       // Reproducciones diarias (-1 = ilimitado)
+    private boolean descargasOffline;       // Si puede descargar contenido
 
+    // CONSTRUCTOR
 
     TipoSuscripcion(double precioMensual, boolean sinAnuncios, int limiteReproducciones, boolean descargasOffline) {
         this.precioMensual = precioMensual;
@@ -21,6 +26,7 @@ public enum TipoSuscripcion {
         this.descargasOffline = descargasOffline;
     }
 
+    // GETTERS
 
     public double getPrecioMensual() {
         return precioMensual;
@@ -38,11 +44,14 @@ public enum TipoSuscripcion {
         return descargasOffline;
     }
 
+    // MÉTODOS PROPIOS
+
+    // Verifica si el tipo de suscripción tiene reproducciones ilimitadas
     public boolean tieneReproduccionesIlimitadas() {
         return limiteReproducciones == -1;
     }
 
-
+    // OVERRIDES
 
     @Override
     public String toString() {

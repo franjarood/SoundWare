@@ -11,7 +11,10 @@ import modelo.plataforma.Anuncio;
 
 import java.util.Date;
 
+// UsuarioGratuito - Usuario con límites y anuncios
 public class UsuarioGratuito extends Usuario {
+
+    // ATRIBUTOS
 
     private int anunciosEscuchados;
     private Date ultimoAnuncio;
@@ -20,15 +23,20 @@ public class UsuarioGratuito extends Usuario {
     private int cancionesSinAnuncio;
     private Date fechaUltimaReproduccion;
 
+    // CONSTANTES
 
     private static final int LIMITE_DIARIO = 50;
     private static final int CANCIONES_ENTRE_ANUNCIOS = 3;
+
+    // CONSTRUCTORES
 
     public UsuarioGratuito(String nombre, String email, String password)
             throws EmailInvalidoException, PasswordDebilException {
 
         super(nombre, email, password, TipoSuscripcion.GRATUITO);
     }
+
+    // OVERRIDES
 
     @Override
     public void reproducir(Contenido contenido)
@@ -38,25 +46,25 @@ public class UsuarioGratuito extends Usuario {
 
         if (contenido == null) return;
 
-        // comprobar disponibilidad
+        // --- Validación de disponibilidad ---
         if (!contenido.isDisponible()) {
             throw new ContenidoNoDisponibleException();
         }
 
-        // comprobar límite diario
+        // --- Validación de límite diario ---
         if (reproduccionesHoy >= LIMITE_DIARIO) {
             throw new LimiteDiarioAlcanzadoException();
         }
 
-        // comprobar si debe escuchar anuncio
+        // --- Validación de anuncios ---
         if (cancionesSinAnuncio >= CANCIONES_ENTRE_ANUNCIOS) {
             throw new AnuncioRequeridoException();
         }
 
-        // reproducir contenido
+        // --- Reproducción ---
         contenido.reproducir();
 
-        // registrar reproducción
+        // --- Registro de reproducción ---
         agregarAlHistorial(contenido);
 
         reproduccionesHoy++;
@@ -64,12 +72,9 @@ public class UsuarioGratuito extends Usuario {
         fechaUltimaReproduccion = new Date();
     }
 
-
-
-
     // MÉTODOS PROPIOS - USUARIO GRATUITO
 
-
+    // Reproduce un anuncio genérico
     public void verAnuncio() {
 
         System.out.println("Reproduciendo anuncio genérico...");
@@ -80,7 +85,7 @@ public class UsuarioGratuito extends Usuario {
         cancionesSinAnuncio = 0;
     }
 
-
+    // Reproduce un anuncio específico
     public void verAnuncio(Anuncio anuncio) {
 
         if (anuncio == null) {
@@ -96,37 +101,36 @@ public class UsuarioGratuito extends Usuario {
         cancionesSinAnuncio = 0;
     }
 
-
+    // Verifica si puede reproducir más contenido hoy
     public boolean puedeReproducir() {
 
         return reproduccionesHoy < LIMITE_DIARIO;
     }
 
-
+    // Verifica si debe ver un anuncio antes de seguir
     public boolean debeVerAnuncio() {
 
         return cancionesSinAnuncio >= CANCIONES_ENTRE_ANUNCIOS;
     }
 
-
+    // Reinicia el contador diario de reproducciones
     public void reiniciarContadorDiario() {
 
         reproduccionesHoy = 0;
         cancionesSinAnuncio = 0;
     }
 
-
+    // Calcula cuántas reproducciones quedan disponibles hoy
     public int getReproduccionesRestantes() {
 
         return LIMITE_DIARIO - reproduccionesHoy;
     }
 
-
+    // Calcula cuántas canciones faltan para el siguiente anuncio
     public int getCancionesHastaAnuncio() {
 
         return CANCIONES_ENTRE_ANUNCIOS - cancionesSinAnuncio;
     }
-
 
 
     // GETTERS Y SETTERS

@@ -29,23 +29,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+// Plataforma - Singleton que gestiona toda la aplicación (usuarios, contenido, artistas, creadores)
+// Es el punto central que coordina todas las operaciones del sistema
 public class Plataforma {
 
-    private static Plataforma instancia;
-    private String nombre;
-    private HashMap<String, Usuario> usuarios;
-    private HashMap<String, Usuario> usuariosPorEmail;
-    private ArrayList<Contenido> catalogo;
-    private ArrayList<Playlist> playlistsPublicas;
-    private HashMap<String, Artista> artistas;
-    private HashMap<String, Creador> creadores;
-    private ArrayList<Album> albumes;
-    private ArrayList<Anuncio> anuncios;
-    private RecomendadorIA recomendador;
-    private int totalAnunciosReproducidos;
+    // ATRIBUTOS
 
+    private static Plataforma instancia; // Instancia única (Singleton)
+    private String nombre; // Nombre de la plataforma
+    private HashMap<String, Usuario> usuarios; // Usuarios por ID
+    private HashMap<String, Usuario> usuariosPorEmail; // Usuarios por email
+    private ArrayList<Contenido> catalogo; // Todo el contenido disponible
+    private ArrayList<Playlist> playlistsPublicas; // Playlists públicas
+    private HashMap<String, Artista> artistas; // Artistas registrados
+    private HashMap<String, Creador> creadores; // Creadores de podcasts
+    private ArrayList<Album> albumes; // Álbumes publicados
+    private ArrayList<Anuncio> anuncios; // Anuncios disponibles
+    private RecomendadorIA recomendador; // Sistema de recomendaciones
+    private int totalAnunciosReproducidos; // Contador de anuncios reproducidos
 
+    // CONSTRUCTOR PRIVADO (Singleton)
 
+    // Crea la plataforma e inicializa todas las colecciones con anuncios por defecto
     private Plataforma(String nombre) {
 
         this.nombre = nombre;
@@ -62,7 +67,7 @@ public class Plataforma {
         albumes = new ArrayList<>();
         anuncios = new ArrayList<>();
 
-        // Agregar anuncios iniciales para que la plataforma tenga contenido publicitario disponible
+        // Agregar anuncios iniciales para que haya contenido publicitario
         anuncios.add(new Anuncio("Spotify", TipoAnuncio.AUDIO, 1000.0));
         anuncios.add(new Anuncio("Nike", TipoAnuncio.BANNER, 500.0));
 
@@ -73,8 +78,7 @@ public class Plataforma {
 
     // MÉTODOS SINGLETON
 
-
-    // Devuelve o crea la instancia única con nombre
+    // Devuelve o crea la instancia única con nombre personalizado
     public static synchronized Plataforma getInstancia(String nombre) {
 
         if (instancia == null) {
@@ -84,8 +88,7 @@ public class Plataforma {
         return instancia;
     }
 
-
-    // Devuelve la instancia con nombre por defecto
+    // Devuelve la instancia con nombre por defecto "Plataforma"
     public static synchronized Plataforma getInstancia() {
 
         if (instancia == null) {
@@ -95,25 +98,24 @@ public class Plataforma {
         return instancia;
     }
 
-
-    // Reinicia la instancia (útil para pruebas)
+    // Reinicia la instancia (útil para tests)
     public static synchronized void reiniciarInstancia() {
 
         instancia = null;
     }
 
+    // MÉTODOS PÚBLICOS - GESTIÓN DE USUARIOS
 
-
-    // GESTIÓN DE USUARIOS
-
-
+    // Registra un nuevo usuario premium con tipo de suscripción personalizado
     public UsuarioPremium registrarUsuarioPremium(String nombre, String email, String password, TipoSuscripcion tipo)
             throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
 
+        // --- Validar que el email no esté en uso ---
         if (usuariosPorEmail.containsKey(email)) {
             throw new UsuarioYaExisteException();
         }
 
+        // --- Crear y registrar usuario ---
         UsuarioPremium u = new UsuarioPremium(nombre, email, password, tipo);
 
         usuarios.put(u.getId(), u);
@@ -122,21 +124,23 @@ public class Plataforma {
         return u;
     }
 
-
+    // Registra un usuario premium con suscripción PREMIUM por defecto
     public UsuarioPremium registrarUsuarioPremium(String nombre, String email, String password)
             throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
 
         return registrarUsuarioPremium(nombre, email, password, TipoSuscripcion.PREMIUM);
     }
 
-
+    // Registra un nuevo usuario gratuito en la plataforma
     public UsuarioGratuito registrarUsuarioGratuito(String nombre, String email, String password)
             throws UsuarioYaExisteException, EmailInvalidoException, PasswordDebilException {
 
+        // --- Validar que el email no esté en uso ---
         if (usuariosPorEmail.containsKey(email)) {
             throw new UsuarioYaExisteException();
         }
 
+        // --- Crear y registrar usuario ---
         UsuarioGratuito u = new UsuarioGratuito(nombre, email, password);
 
         usuarios.put(u.getId(), u);
@@ -145,7 +149,7 @@ public class Plataforma {
         return u;
     }
 
-
+    // Obtiene lista de todos los usuarios premium
     public ArrayList<UsuarioPremium> getUsuariosPremium() {
 
         ArrayList<UsuarioPremium> res = new ArrayList<>();
@@ -159,7 +163,7 @@ public class Plataforma {
         return res;
     }
 
-
+    // Obtiene lista de todos los usuarios gratuitos
     public ArrayList<UsuarioGratuito> getUsuariosGratuitos() {
 
         ArrayList<UsuarioGratuito> res = new ArrayList<>();
@@ -173,24 +177,21 @@ public class Plataforma {
         return res;
     }
 
-
+    // Obtiene lista de todos los usuarios registrados
     public ArrayList<Usuario> getTodosLosUsuarios() {
 
         return new ArrayList<>(usuarios.values());
     }
 
-
+    // Busca un usuario por su email
     public Usuario buscarUsuarioPorEmail(String email) {
 
         return usuariosPorEmail.get(email);
     }
 
+    // MÉTODOS PÚBLICOS - GESTIÓN DE ARTISTAS
 
-
-
-    // GESTIÓN DE ARTISTAS
-
-
+    // Registra un nuevo artista en la plataforma
     public Artista registrarArtista(String nombreArtistico, String nombreReal, String paisOrigen, boolean verificado) {
 
         Artista artista = new Artista(nombreArtistico, nombreReal, paisOrigen, verificado, null);
@@ -200,7 +201,7 @@ public class Plataforma {
         return artista;
     }
 
-
+    // Registra un artista existente en la plataforma
     public void registrarArtista(Artista artista) {
 
         if (artista != null) {
@@ -208,7 +209,7 @@ public class Plataforma {
         }
     }
 
-
+    // Obtiene lista de artistas verificados
     public ArrayList<Artista> getArtistasVerificados() {
 
         ArrayList<Artista> res = new ArrayList<>();
@@ -223,6 +224,7 @@ public class Plataforma {
     }
 
 
+    // Obtiene lista de artistas no verificados
     public ArrayList<Artista> getArtistasNoVerificados() {
 
         ArrayList<Artista> res = new ArrayList<>();
@@ -236,7 +238,7 @@ public class Plataforma {
         return res;
     }
 
-
+    // Busca un artista por nombre (lanza excepción si no existe)
     public Artista buscarArtista(String nombre) throws ArtistaNoEncontradoException {
 
         Artista artista = artistas.get(nombre);
@@ -248,11 +250,9 @@ public class Plataforma {
         return artista;
     }
 
+    // MÉTODOS PÚBLICOS - GESTIÓN DE ÁLBUMES
 
-
-    // GESTIÓN DE ÁLBUMES
-
-
+    // Crea un álbum para un artista verificado
     public Album crearAlbum(Artista artista, String titulo, Date fecha)
             throws ArtistaNoVerificadoException, AlbumYaExisteException {
 
@@ -263,18 +263,15 @@ public class Plataforma {
         return album;
     }
 
-
+    // Obtiene lista de todos los álbumes publicados
     public ArrayList<Album> getAlbumes() {
 
         return new ArrayList<>(albumes);
     }
 
+    // MÉTODOS PÚBLICOS - GESTIÓN DE CANCIONES
 
-
-    // GESTIÓN DE CANCIONES
-
-
-    // Crea canción independiente.
+    // Crea una canción independiente (sin álbum) y la añade al catálogo
     public Cancion crearCancion(String titulo, int duracion, Artista artista, GeneroMusical genero)
             throws DuracionInvalidaException {
 
@@ -289,8 +286,7 @@ public class Plataforma {
         return c;
     }
 
-
-    // Delegación al álbum (composición).
+    // Crea una canción dentro de un álbum específico
     public Cancion crearCancionEnAlbum(String titulo, int duracion, Artista artista, GeneroMusical genero, Album album)
             throws DuracionInvalidaException, AlbumCompletoException {
 
@@ -301,8 +297,7 @@ public class Plataforma {
         return c;
     }
 
-
-    // Agrega contenido al catálogo
+    // Agrega contenido al catálogo general (sin duplicados)
     public void agregarContenidoCatalogo(Contenido contenido) {
 
         if (contenido != null && !catalogo.contains(contenido)) {
@@ -310,8 +305,7 @@ public class Plataforma {
         }
     }
 
-
-    // Devuelve todas las canciones del catálogo
+    // Obtiene lista de todas las canciones del catálogo
     public ArrayList<Cancion> getCanciones() {
 
         ArrayList<Cancion> res = new ArrayList<>();
@@ -327,9 +321,9 @@ public class Plataforma {
 
 
 
-    // GESTIÓN DE CREADORES/PODCASTS
+    // MÉTODOS PÚBLICOS - GESTIÓN DE CREADORES/PODCASTS
 
-
+    // Registra un nuevo creador de podcasts en la plataforma
     public Creador registrarCreador(String nombreCanal, String nombre, String descripcion) {
 
         Creador c = new Creador(nombreCanal, nombre, descripcion);
@@ -339,7 +333,7 @@ public class Plataforma {
         return c;
     }
 
-
+    // Registra un creador existente en la plataforma
     public void registrarCreador(Creador creador) {
 
         if (creador != null) {
@@ -347,7 +341,7 @@ public class Plataforma {
         }
     }
 
-
+    // Crea un podcast y lo publica en el canal del creador
     public Podcast crearPodcast(String titulo, int duracion, Creador creador, int numEpisodio, int temporada, CategoriaPodcast categoria)
             throws DuracionInvalidaException, LimiteEpisodiosException {
 
@@ -360,7 +354,7 @@ public class Plataforma {
         return p;
     }
 
-
+    // Obtiene lista de todos los podcasts del catálogo
     public ArrayList<Podcast> getPodcasts() {
 
         ArrayList<Podcast> res = new ArrayList<>();
@@ -374,16 +368,15 @@ public class Plataforma {
         return res;
     }
 
-
+    // Obtiene lista de todos los creadores registrados
     public ArrayList<Creador> getTodosLosCreadores() {
 
         return new ArrayList<>(creadores.values());
     }
 
+    // MÉTODOS PÚBLICOS - GESTIÓN DE PLAYLISTS PÚBLICAS
 
-    // GESTIÓN DE PLAYLISTS PÚBLICAS
-
-
+    // Crea una playlist pública visible para todos los usuarios
     public Playlist crearPlaylistPublica(String nombre, Usuario creador) {
 
         Playlist p = new Playlist(nombre, creador);
@@ -395,18 +388,15 @@ public class Plataforma {
         return p;
     }
 
-
+    // Obtiene lista de todas las playlists públicas
     public ArrayList<Playlist> getPlaylistsPublicas() {
 
         return new ArrayList<>(playlistsPublicas);
     }
 
+    // MÉTODOS PÚBLICOS - BÚSQUEDAS
 
-
-
-    // BÚSQUEDAS
-
-
+    // Busca contenido por término en el título
     public ArrayList<Contenido> buscarContenido(String termino)
             throws ContenidoNoEncontradoException {
 
@@ -426,7 +416,7 @@ public class Plataforma {
         return res;
     }
 
-
+    // Busca canciones por género musical
     public ArrayList<Cancion> buscarPorGenero(GeneroMusical genero)
             throws ContenidoNoEncontradoException {
 
@@ -451,7 +441,7 @@ public class Plataforma {
         return res;
     }
 
-
+    // Busca podcasts por categoría
     public ArrayList<Podcast> buscarPorCategoria(CategoriaPodcast categoria)
             throws ContenidoNoEncontradoException {
 
@@ -476,7 +466,7 @@ public class Plataforma {
         return res;
     }
 
-
+    // Obtiene el contenido más reproducido (top N)
     public ArrayList<Contenido> obtenerTopContenidos(int cantidad) {
 
         ArrayList<Contenido> copia = new ArrayList<>(catalogo);
@@ -491,13 +481,9 @@ public class Plataforma {
         return new ArrayList<>(copia.subList(0, cantidad));
     }
 
+    // MÉTODOS PÚBLICOS - ANUNCIOS
 
-
-
-    // ANUNCIOS
-
-
-    // Devuelve anuncio activo aleatorio
+    // Devuelve un anuncio activo aleatorio
     public Anuncio obtenerAnuncioAleatorio() {
 
         ArrayList<Anuncio> activos = new ArrayList<>();
@@ -517,15 +503,13 @@ public class Plataforma {
         return activos.get(indice);
     }
 
-
-    // Incrementa contador de anuncios reproducidos
+    // Incrementa el contador de anuncios reproducidos
     public void incrementarAnunciosReproducidos() {
 
         totalAnunciosReproducidos++;
     }
 
-
-
+    // Genera un reporte con estadísticas generales de la plataforma
     public String obtenerEstadisticasGenerales() {
 
         return "Plataforma: " + nombre +
@@ -538,9 +522,7 @@ public class Plataforma {
                 "\nAnuncios reproducidos: " + totalAnunciosReproducidos;
     }
 
-
-
-    // GETTERS BÁSICOS
+    // GETTERS Y SETTERS
 
 
     public String getNombre() {

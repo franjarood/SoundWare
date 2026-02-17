@@ -13,34 +13,43 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
+// Playlist - Lista de contenido (canciones/podcasts) creada por un usuario
+// Puede ser pública (visible por todos) o privada (solo del usuario)
+// Tiene límite de 500 contenidos y no permite duplicados
 public class Playlist {
 
-    private String id;
-    private String nombre;
-    private Usuario creador;
-    private ArrayList<Contenido> contenidos;
-    private boolean esPublica;
-    private int seguidores;
-    private String descripcion;
-    private String portadaURL;
-    private Date fechaCreacion;
-    private int maxContenidos;
+    // ATRIBUTOS
+
+    private String id; // Identificador único
+    private String nombre; // Nombre de la playlist
+    private Usuario creador; // Usuario que la creó
+    private ArrayList<Contenido> contenidos; // Contenido (canciones/podcasts)
+    private boolean esPublica; // Si otros pueden verla
+    private int seguidores; // Cuánta gente la sigue
+    private String descripcion; // Descripción opcional
+    private String portadaURL; // URL de la imagen
+    private Date fechaCreacion; // Cuándo se creó
+    private int maxContenidos; // Límite de contenido
+
+    // CONSTANTES
 
     private static final int MAX_CONTENIDOS_DEFAULT = 500;
 
+    // CONSTRUCTORES
 
+    // Crea una playlist privada por defecto
     public Playlist(String nombre, Usuario creador) {
         this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.creador = creador;
 
-        this.esPublica = false; // privada por defecto
+        this.esPublica = false; // Privada por defecto
         this.contenidos = new ArrayList<>();
         this.fechaCreacion = new Date();
         this.maxContenidos = MAX_CONTENIDOS_DEFAULT;
     }
 
-
+    // Crea una playlist con configuración personalizada (pública/privada)
     public Playlist(String nombre, Usuario creador, boolean esPublica, String descripcion) {
         this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
@@ -53,27 +62,29 @@ public class Playlist {
         this.maxContenidos = MAX_CONTENIDOS_DEFAULT;
     }
 
+    // MÉTODOS PÚBLICOS
 
-    // MÉTODOS - PLAYLIST
-
+    // Añade contenido a la playlist (sin duplicados, con límite de 500)
     public void agregarContenido(Contenido contenido)
             throws PlaylistLlenaException, ContenidoDuplicadoException {
 
         if (contenido == null) return;
 
+        // --- Validar límite ---
         if (contenidos.size() >= maxContenidos) {
             throw new PlaylistLlenaException();
         }
 
+        // --- Validar duplicado ---
         if (contenidos.contains(contenido)) {
             throw new ContenidoDuplicadoException();
         }
 
+        // --- Agregar contenido ---
         contenidos.add(contenido);
     }
 
-
-    // CORREGIDO: no borrar dentro de for-each
+    // Elimina contenido de la playlist por ID (evita ConcurrentModificationException)
     public boolean eliminarContenido(String idContenido) {
 
         if (idContenido == null) return false;
@@ -88,13 +99,12 @@ public class Playlist {
         return false;
     }
 
-
+    // Elimina contenido de la playlist por objeto
     public boolean eliminarContenido(Contenido contenido) {
         return contenidos.remove(contenido);
     }
 
-
-    // CORREGIDO: solo criterios posibles con métodos de Contenido
+    // Ordena el contenido según el criterio especificado
     public void ordenarPor(CriterioOrden criterio) throws PlaylistVaciaException {
 
         if (contenidos.isEmpty()) {
@@ -121,7 +131,7 @@ public class Playlist {
                 break;
 
             case FECHA_AGREGADO:
-                // En tu Contenido existe getFechaPublicacion (no getFechaAgregado)
+                // Ordena por fecha de publicación del contenido
                 contenidos.sort((a, b) ->
                         a.getFechaPublicacion().compareTo(b.getFechaPublicacion()));
                 break;
@@ -131,14 +141,13 @@ public class Playlist {
                 break;
 
             case ARTISTA:
-                // No se puede ordenar por ARTISTA porque Playlist guarda Contenido
-                // y Contenido no tiene getArtista(). (Solo Cancion lo tiene)
-                // Lo dejamos sin hacer para no romper.
+                // No se puede ordenar por ARTISTA porque Contenido no tiene getArtista()
+                // Solo Cancion lo tiene, se deja sin implementar
                 break;
         }
     }
 
-
+    // Calcula la duración total de la playlist en segundos
     public int getDuracionTotal() {
 
         int total = 0;
@@ -150,7 +159,7 @@ public class Playlist {
         return total;
     }
 
-
+    // Devuelve la duración total formateada (H:MM:SS o M:SS)
     public String getDuracionTotalFormateada() {
 
         int total = getDuracionTotal();
@@ -167,12 +176,12 @@ public class Playlist {
         return String.format("%d:%02d", minutos, segundos);
     }
 
-
+    // Mezcla aleatoriamente el orden del contenido
     public void shuffle() {
         Collections.shuffle(contenidos);
     }
 
-
+    // Busca contenido en la playlist por término en el título
     public ArrayList<Contenido> buscarContenido(String termino) {
 
         ArrayList<Contenido> resultado = new ArrayList<>();
@@ -188,39 +197,39 @@ public class Playlist {
         return resultado;
     }
 
-
+    // Hace la playlist visible para todos
     public void hacerPublica() {
         esPublica = true;
     }
 
-
+    // Hace la playlist privada (solo para el creador)
     public void hacerPrivada() {
         esPublica = false;
     }
 
-
+    // Incrementa el contador de seguidores
     public void incrementarSeguidores() {
         seguidores++;
     }
 
-
+    // Decrementa el contador de seguidores (mínimo 0)
     public void decrementarSeguidores() {
         if (seguidores > 0) {
             seguidores--;
         }
     }
 
-
+    // Devuelve el número de contenidos en la playlist
     public int getNumContenidos() {
         return contenidos.size();
     }
 
-
+    // Verifica si la playlist está vacía
     public boolean estaVacia() {
         return contenidos.isEmpty();
     }
 
-
+    // Obtiene un contenido por su posición en la playlist
     public Contenido getContenido(int posicion) {
 
         if (posicion < 0 || posicion >= contenidos.size()) {
@@ -237,7 +246,6 @@ public class Playlist {
         return id;
     }
 
-
     public String getNombre() {
         return nombre;
     }
@@ -246,17 +254,14 @@ public class Playlist {
         this.nombre = nombre;
     }
 
-
     public Usuario getCreador() {
         return creador;
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia de los contenidos para evitar modificaciones externas
     public ArrayList<Contenido> getContenidos() {
         return new ArrayList<>(contenidos);
     }
-
 
     public boolean isEsPublica() {
         return esPublica;
@@ -266,7 +271,6 @@ public class Playlist {
         this.esPublica = esPublica;
     }
 
-
     public int getSeguidores() {
         return seguidores;
     }
@@ -274,7 +278,6 @@ public class Playlist {
     public void setSeguidores(int seguidores) {
         this.seguidores = seguidores;
     }
-
 
     public String getDescripcion() {
         return descripcion;
@@ -284,7 +287,6 @@ public class Playlist {
         this.descripcion = descripcion;
     }
 
-
     public String getPortadaURL() {
         return portadaURL;
     }
@@ -293,17 +295,16 @@ public class Playlist {
         this.portadaURL = portadaURL;
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia de la fecha para evitar modificaciones (Date es mutable)
     public Date getFechaCreacion() {
         return new Date(fechaCreacion.getTime());
     }
-
 
     public int getMaxContenidos() {
         return maxContenidos;
     }
 
+    // OVERRIDES
 
     @Override
     public String toString() {
@@ -313,7 +314,6 @@ public class Playlist {
                 " | Pública: " + esPublica +
                 " | Seguidores: " + seguidores;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -331,13 +331,10 @@ public class Playlist {
         return id != null && id.equals(otra.id);
     }
 
-
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
-
-
 
 
 }

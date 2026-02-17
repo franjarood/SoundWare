@@ -120,9 +120,9 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         return getDuracionSegundos();
     }
 
+    // MÉTODOS PROPIOS
 
-
-
+    // Obtiene una descripción completa del podcast
     public String obtenerDescripcion() {
 
         return "Podcast: " + getTitulo() +
@@ -131,6 +131,7 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
                 " | Episodio: " + numeroEpisodio;
     }
 
+    // Añade un invitado a la lista (sin duplicados)
     public void agregarInvitado(String nombre) {
 
         if (nombre != null && !nombre.isEmpty()) {
@@ -145,10 +146,12 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         }
     }
 
+    // Verifica si es el primer episodio de la temporada
     public boolean esTemporadaNueva() {
         return temporada == 1;
     }
 
+    // Obtiene la transcripción del podcast si está disponible
     public String obtenerTranscripcion() throws TranscripcionNoDisponibleException {
 
         if (transcripcion == null || transcripcion.isEmpty()) {
@@ -158,6 +161,7 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         return transcripcion;
     }
 
+    // Valida que el número de episodio y temporada sean válidos
     public void validarEpisodio() throws EpisodioNoEncontradoException {
 
         if (temporada <= 0 || numeroEpisodio <= 0) {
@@ -165,8 +169,7 @@ public class Podcast extends Contenido implements iReproducible, iDescargable {
         }
     }
 
-
-    //getters y setters
+    // GETTERS Y SETTERS
 
     public Creador getCreador() {
         return creador;

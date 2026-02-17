@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+// Creador - Productor de podcasts
 public class Creador {
+
+    // ATRIBUTOS
 
     private String id;
     private String nombreCanal;
@@ -21,7 +24,11 @@ public class Creador {
     private HashMap<String, String> redesSociales;
     private ArrayList<CategoriaPodcast> categoriasPrincipales;
 
+    // CONSTANTES
+
     private static final int MAX_EPISODIOS = 500;
+
+    // CONSTRUCTORES
 
     public Creador(String nombreCanal, String nombre) {
         this.nombreCanal = nombreCanal;
@@ -42,7 +49,9 @@ public class Creador {
         this.categoriasPrincipales = new ArrayList<>();
     }
 
-    // Publica un episodio
+    // MÉTODOS PÚBLICOS
+
+    // Publica un nuevo episodio (con límite de 500)
     public void publicarPodcast(Podcast episodio) throws LimiteEpisodiosException {
 
         if (episodios.size() >= MAX_EPISODIOS) {
@@ -51,7 +60,6 @@ public class Creador {
 
         episodios.add(episodio);
     }
-
 
     // Genera estadísticas del creador
     public EstadisticasCreador obtenerEstadisticas() {
@@ -63,17 +71,13 @@ public class Creador {
         return new EstadisticasCreador(this);
     }
 
-
     // Añade red social (guardando la clave en minúsculas)
     public void agregarRedSocial(String red, String usuario) {
 
         if (red != null && !red.trim().isEmpty()) {
             redesSociales.put(red.toLowerCase(), usuario);
         }
-    }
-
-
-    // Promedio de reproducciones
+    }    // Promedio de reproducciones
     public double calcularPromedioReproducciones() {
 
         if (episodios.isEmpty()) {
@@ -148,9 +152,7 @@ public class Creador {
         return max;
     }
 
-
-
-    //getters y setters
+    // GETTERS Y SETTERS
 
     public String getId() {
         return id;
@@ -216,6 +218,7 @@ public class Creador {
         return episodios.size();
     }
 
+    // OVERRIDES
 
     @Override
     public String toString() {

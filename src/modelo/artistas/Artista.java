@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-
+// Artista - Creador de canciones y álbumes
 public class Artista {
+
+    // ATRIBUTOS
 
     private String id;
     private String nombreArtistico;
@@ -21,6 +23,7 @@ public class Artista {
     private boolean verificado;
     private String biografia;
 
+    // CONSTRUCTORES
 
     public Artista(String nombreArtistico, String nombreReal, String paisOrigen) {
         this.nombreArtistico = nombreArtistico;
@@ -42,9 +45,7 @@ public class Artista {
         this.albumes = new ArrayList<>();
     }
 
-
-    // MÉTODOS DE ARTISTA
-
+    // MÉTODOS PÚBLICOS
 
     // Añade una canción a la discografía
     public void publicarCancion(Cancion cancion) {
@@ -210,8 +211,7 @@ public class Artista {
         this.biografia = biografia;
     }
 
-
-
+    // OVERRIDES
 
     @Override
     public String toString() {

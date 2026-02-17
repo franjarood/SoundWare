@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-
-
+// Album - Colección de canciones de un artista
 public class Album {
+
+    // ATRIBUTOS
 
     private String id;
     private String titulo;
@@ -23,9 +24,11 @@ public class Album {
     private String discografica;
     private String tipoAlbum;
 
+    // CONSTANTES
+
     private static final int MAX_CANCIONES = 20;
 
-
+    // CONSTRUCTORES
 
     public Album(String titulo, Artista artista, Date fechaLanzamiento) {
         this.titulo = titulo;
@@ -34,7 +37,6 @@ public class Album {
 
         this.canciones = new ArrayList<>();
     }
-
 
     public Album(String titulo, Artista artista, Date fechaLanzamiento, String discografica, String tipoAlbum) {
         this.titulo = titulo;
@@ -46,8 +48,9 @@ public class Album {
         this.canciones = new ArrayList<>();
     }
 
+    // MÉTODOS PÚBLICOS
 
-
+    // Crea una nueva canción en el álbum (máximo 20 canciones)
     public Cancion crearCancion(String titulo, int duracionSegundos, GeneroMusical genero)
             throws AlbumCompletoException, DuracionInvalidaException {
 
@@ -174,6 +177,7 @@ public class Album {
         return id;
     }
 
+    // GETTERS Y SETTERS
 
     public String getTitulo() {
         return titulo;

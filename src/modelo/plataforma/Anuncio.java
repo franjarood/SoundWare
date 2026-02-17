@@ -4,7 +4,10 @@ import enums.TipoAnuncio;
 
 import java.util.Objects;
 
+// Anuncio - Publicidad que se muestra a usuarios gratuitos
 public class Anuncio {
+
+    // ATRIBUTOS
 
     private String id;
     private String empresa;
@@ -15,6 +18,7 @@ public class Anuncio {
     private double presupuesto;
     private boolean activo;
 
+    // CONSTRUCTORES
 
     public Anuncio(String empresa, TipoAnuncio tipo, double presupuesto) {
         this.empresa = empresa;
@@ -31,8 +35,9 @@ public class Anuncio {
         this.activo = true; // Los anuncios se crean activos por defecto
     }
 
+    // MÉTODOS PÚBLICOS
 
-
+    // Reproduce el anuncio y registra la impresión
     public void reproducir() {
 
         if (activo) {
@@ -40,6 +45,7 @@ public class Anuncio {
         }
     }
 
+    // Registra una nueva impresión y desactiva si se agota el presupuesto
     public void registrarImpresion() {
 
         impresiones++;
@@ -49,14 +55,17 @@ public class Anuncio {
         }
     }
 
+    // Calcula el costo por cada impresión según el tipo de anuncio
     public double calcularCostoPorImpresion() {
         return tipo.getCostoPorImpresion();
     }
 
+    // Calcula el costo total acumulado
     public double calcularCostoTotal() {
         return impresiones * calcularCostoPorImpresion();
     }
 
+    // Calcula cuántas impresiones quedan disponibles
     public int calcularImpresionesRestantes() {
 
         double restante = presupuesto - calcularCostoTotal();
@@ -68,22 +77,22 @@ public class Anuncio {
         return (int)(restante / calcularCostoPorImpresion());
     }
 
+    // Desactiva el anuncio
     public void desactivar() {
         activo = false;
     }
 
+    // Activa el anuncio
     public void activar() {
         activo = true;
     }
 
+    // Verifica si el anuncio puede mostrarse
     public boolean puedeMostrarse() {
         return activo && calcularCostoTotal() < presupuesto;
     }
 
-
-
-    //getter y setters
-
+    // GETTERS Y SETTERS
 
     public String getId() {
         return id;
@@ -145,9 +154,7 @@ public class Anuncio {
         this.activo = activo;
     }
 
-
-
-
+    // OVERRIDES
 
     @Override
     public String toString() {

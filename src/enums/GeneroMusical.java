@@ -1,5 +1,8 @@
 package enums;
 
+// GeneroMusical - Géneros musicales disponibles para clasificar canciones
+// Se usa para categorizar canciones, filtrar búsquedas y generar recomendaciones
+// Los tags/géneros permiten encontrar contenido similar
 public enum GeneroMusical {
     POP("Pop", "Música popular contemporánea"),
     ROCK("Rock", "Rock clásico y moderno"),
@@ -16,8 +19,8 @@ public enum GeneroMusical {
     BLUES("Blues", "Blues clásico y contemporáneo"),
     TRAP("Trap", "Trap y música urbana");
 
-    private String nombre;
-    private String descripcion;
+    private String nombre;          // Nombre del género
+    private String descripcion;     // Descripción del género
 
     GeneroMusical(String nombre, String descripcion) {
         this.nombre = nombre;

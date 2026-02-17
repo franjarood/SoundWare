@@ -11,19 +11,27 @@ import modelo.usuarios.Usuario;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// RecomendadorIA - Sistema de recomendaciones basado en IA
+// Analiza el historial de usuarios para recomendar contenido personalizado
+// Usa algoritmos colaborativos, de contenido o híbridos
 public class RecomendadorIA implements iRecomendador {
 
-    private HashMap<String, ArrayList<String>> matrizPreferencias;
-    private HashMap<String, ArrayList<Contenido>> historialCompleto;
-    private AlgoritmoRecomendacion algoritmo;
-    private double umbralSimilitud;
-    private boolean modeloEntrenado;
-    private ArrayList<Contenido> catalogoReferencia;
+    // ATRIBUTOS
 
+    private HashMap<String, ArrayList<String>> matrizPreferencias; // Preferencias por usuario (tags)
+    private HashMap<String, ArrayList<Contenido>> historialCompleto; // Historial guardado de usuarios
+    private AlgoritmoRecomendacion algoritmo; // Tipo de algoritmo (colaborativo/contenido/híbrido)
+    private double umbralSimilitud; // Nivel mínimo de similitud para recomendar
+    private boolean modeloEntrenado; // Si el modelo está listo para usar
+    private ArrayList<Contenido> catalogoReferencia; // Catálogo completo para comparar
 
-    private static final double UMBRAL_DEFAULT = 0.6;
+    // CONSTANTES
 
+    private static final double UMBRAL_DEFAULT = 0.6; // Umbral por defecto de similitud
 
+    // CONSTRUCTORES
+
+    // Crea un recomendador sin algoritmo específico
     public RecomendadorIA() {
 
         matrizPreferencias = new HashMap<>();
@@ -31,7 +39,7 @@ public class RecomendadorIA implements iRecomendador {
         catalogoReferencia = new ArrayList<>();
     }
 
-
+    // Crea un recomendador con algoritmo específico
     public RecomendadorIA(AlgoritmoRecomendacion algoritmo) {
 
         matrizPreferencias = new HashMap<>();
@@ -41,20 +49,24 @@ public class RecomendadorIA implements iRecomendador {
         this.algoritmo = algoritmo;
     }
 
+    // IMPLEMENTACIÓN DE INTERFACES - iRecomendador
 
+    // Recomienda contenido basándose en el historial del usuario
+    // Busca contenido similar a lo que ya ha escuchado
     @Override
     public ArrayList<Contenido> recomendar(Usuario usuario) throws RecomendacionException {
 
-        // Primero verificar que el modelo esté entrenado
+        // --- Validar que el modelo esté entrenado ---
         if (!modeloEntrenado) {
             throw new ModeloNoEntrenadoException();
         }
 
-        // Luego verificar que el usuario tenga historial
+        // --- Validar que el usuario tenga historial ---
         if (usuario == null || usuario.getHistorial().isEmpty()) {
             throw new HistorialVacioException();
         }
 
+        // --- Generar recomendaciones basadas en contenido similar ---
         ArrayList<Contenido> recomendaciones = new ArrayList<>();
 
         for (Contenido visto : usuario.getHistorial()) {
@@ -68,8 +80,10 @@ public class RecomendadorIA implements iRecomendador {
         return recomendaciones;
     }
 
+    // Encuentra contenido similar por tags (género/categoría)
     @Override
     public ArrayList<Contenido> obtenerSimilares(Contenido contenido) throws RecomendacionException {
+
         if (!modeloEntrenado) {
             throw new RecomendacionException();
         }
@@ -80,15 +94,16 @@ public class RecomendadorIA implements iRecomendador {
 
         ArrayList<Contenido> similares = new ArrayList<>();
 
+        // --- Buscar contenido con al menos 1 tag en común ---
         for (Contenido c : catalogoReferencia) {
 
             if (c == null || c.equals(contenido)) continue;
 
-            // "género/categoría" -> tags (coincidencia de al menos 1)
+            // Comparar tags (género/categoría)
             for (String tag : contenido.getTags()) {
                 if (tag != null && c.getTags().contains(tag)) {
                     similares.add(c);
-                    break;
+                    break; // Ya encontró coincidencia, pasar al siguiente
                 }
             }
         }
@@ -96,14 +111,10 @@ public class RecomendadorIA implements iRecomendador {
         return similares;
     }
 
-
-
-
     // MÉTODOS PROPIOS
 
-
-
-    // Construye el modelo a partir de usuarios
+    // Entrena el modelo analizando historiales de usuarios
+    // Extrae preferencias (tags) de cada usuario
     public void entrenarModelo(ArrayList<Usuario> usuarios) {
 
         matrizPreferencias.clear();
@@ -115,12 +126,12 @@ public class RecomendadorIA implements iRecomendador {
 
             for (Contenido c : u.getHistorial()) {
 
-                // guardar historial completo
+                // Guardar historial completo del usuario
                 historialCompleto
                         .computeIfAbsent(u.getId(), k -> new ArrayList<>())
                         .add(c);
 
-                // extraer géneros/categorías (tags)
+                // Extraer tags (géneros/categorías) del contenido
                 for (String tag : c.getTags()) {
 
                     if (!preferencias.contains(tag)) {
@@ -135,8 +146,7 @@ public class RecomendadorIA implements iRecomendador {
         modeloEntrenado = true;
     }
 
-
-    // Construye el modelo y fija catálogo de referencia
+    // Entrena el modelo y establece el catálogo de referencia
     public void entrenarModelo(ArrayList<Usuario> usuarios, ArrayList<Contenido> catalogo) {
 
         entrenarModelo(usuarios);
@@ -145,8 +155,8 @@ public class RecomendadorIA implements iRecomendador {
         catalogoReferencia.addAll(catalogo);
     }
 
-
-    // Calcula similitud entre usuarios
+    // Calcula cuánto se parecen dos usuarios (por preferencias comunes)
+    // Devuelve un valor entre 0.0 (nada parecidos) y 1.0 (idénticos)
     public double calcularSimilitud(Usuario u1, Usuario u2) {
 
         ArrayList<String> p1 = matrizPreferencias.get(u1.getId());
@@ -154,6 +164,7 @@ public class RecomendadorIA implements iRecomendador {
 
         if (p1 == null || p2 == null) return 0.0;
 
+        // Contar tags en común
         int coincidencias = 0;
 
         for (String tag : p1) {
@@ -162,6 +173,7 @@ public class RecomendadorIA implements iRecomendador {
             }
         }
 
+        // Calcular porcentaje de similitud
         int total = Math.max(p1.size(), p2.size());
 
         if (total == 0) return 0.0;
@@ -169,8 +181,7 @@ public class RecomendadorIA implements iRecomendador {
         return (double) coincidencias / total;
     }
 
-
-    // Actualiza preferencias del usuario según historial
+    // Actualiza las preferencias de un usuario según su historial actual
     public void actualizarPreferencias(Usuario usuario) {
 
         ArrayList<String> preferencias = new ArrayList<>();
@@ -188,8 +199,7 @@ public class RecomendadorIA implements iRecomendador {
         matrizPreferencias.put(usuario.getId(), preferencias);
     }
 
-
-    // Cuenta preferencias globales
+    // Cuenta qué tags (géneros/categorías) son más populares globalmente
     public HashMap<String, Integer> obtenerGenerosPopulares() {
 
         HashMap<String, Integer> conteo = new HashMap<>();
@@ -205,16 +215,16 @@ public class RecomendadorIA implements iRecomendador {
         return conteo;
     }
 
+    // MÉTODOS PRIVADOS
 
-
-    // MÉTODOS PRIVADO
-
+    // Calcula cuánto coincide un contenido con las preferencias de un usuario
     private double calcularSimilitudContenido(Contenido contenido, ArrayList<String> preferencias) {
 
         if (contenido == null || preferencias == null || preferencias.isEmpty()) {
             return 0.0;
         }
 
+        // Contar coincidencias de tags
         int coincidencias = 0;
 
         for (String tag : contenido.getTags()) {
@@ -224,6 +234,7 @@ public class RecomendadorIA implements iRecomendador {
             }
         }
 
+        // Calcular similitud como porcentaje
         int total = Math.max(contenido.getTags().size(), preferencias.size());
 
         if (total == 0) return 0.0;
@@ -231,10 +242,7 @@ public class RecomendadorIA implements iRecomendador {
         return (double) coincidencias / total;
     }
 
-
-
     // GETTERS Y SETTERS
-
 
     public AlgoritmoRecomendacion getAlgoritmo() {
         return algoritmo;
@@ -244,7 +252,6 @@ public class RecomendadorIA implements iRecomendador {
         this.algoritmo = algoritmo;
     }
 
-
     public double getUmbralSimilitud() {
         return umbralSimilitud;
     }
@@ -253,13 +260,11 @@ public class RecomendadorIA implements iRecomendador {
         this.umbralSimilitud = umbralSimilitud;
     }
 
-
     public boolean isModeloEntrenado() {
         return modeloEntrenado;
     }
 
-
-    // COPIA DEFENSIVA
+    // Devuelve copia de la matriz de preferencias para evitar modificaciones
     public HashMap<String, ArrayList<String>> getMatrizPreferencias() {
 
         HashMap<String, ArrayList<String>> copia = new HashMap<>();
@@ -271,7 +276,7 @@ public class RecomendadorIA implements iRecomendador {
         return copia;
     }
 
-
+    // Establece el catálogo de contenido para las recomendaciones
     public void setCatalogoReferencia(ArrayList<Contenido> catalogo) {
 
         catalogoReferencia.clear();

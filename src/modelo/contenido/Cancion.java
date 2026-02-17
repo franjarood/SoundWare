@@ -11,9 +11,10 @@ import interfaces.iDescargable;
 import modelo.artistas.Album;
 import modelo.artistas.Artista;
 
-
-
+// Cancion - Contenido musical de un artista
 public class Cancion extends Contenido implements iReproducible, iDescargable {
+
+    // ATRIBUTOS
 
     private String letra;
     private Artista artista;
@@ -26,6 +27,7 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
     private boolean pausado;
     private boolean descargado;
 
+    // CONSTRUCTORES
 
     public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero) throws DuracionInvalidaException {
         super(titulo, duracionSegundos);
@@ -34,8 +36,6 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         this.audioURL = "audio/default/" + getId();
         this.ISRC = generarISRC();
     }
-
-
 
     public Cancion(String titulo, int duracionSegundos, Artista artista, GeneroMusical genero,
                    String letra, boolean explicit) throws DuracionInvalidaException {
@@ -51,14 +51,16 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         this.ISRC = generarISRC();
     }
 
+    // MÉTODOS PRIVADOS
 
+    // Genera un código ISRC único para la canción
     private String generarISRC() {
         return "ISRC-" + getId();
     }
 
+    // MÉTODOS PÚBLICOS
 
-
-
+    // Obtiene la letra de la canción si está disponible
     public String obtenerLetra() throws LetraNoDisponibleException {
 
         if (letra == null || letra.isEmpty()) {
@@ -68,14 +70,17 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         return letra;
     }
 
+    // Verifica si la canción tiene contenido explícito
     public boolean esExplicit() {
         return explicit;
     }
 
+    // Cambia el género musical de la canción
     public void cambiarGenero(GeneroMusical nuevoGenero) {
         this.genero = nuevoGenero;
     }
 
+    // Valida que el archivo de audio exista
     public void validarAudioURL() throws ArchivoAudioNoEncontradoException {
 
         if (audioURL == null || audioURL.isEmpty()) {
@@ -83,6 +88,7 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         }
     }
 
+    // GETTERS Y SETTERS
 
     public String getLetra() {
         return letra;
@@ -155,10 +161,8 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         this.descargado = descargado;
     }
 
+    // OVERRIDES - Contenido
 
-
-
-    // Implementación de Contenido
     @Override
     public void reproducir() throws ContenidoNoDisponibleException {
 
@@ -170,8 +174,8 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         reproduciendo = true;
     }
 
+    // IMPLEMENTACIÓN DE INTERFACES - iReproducible
 
-    // Implementación de iReproducible
     @Override
     public void play() {
         reproduciendo = true;
@@ -200,7 +204,8 @@ public class Cancion extends Contenido implements iReproducible, iDescargable {
         return getDuracionSegundos();
     }
 
-    // Implementación de iDescargable
+    // IMPLEMENTACIÓN DE INTERFACES - iDescargable
+
     @Override
     public boolean descargar() throws LimiteDescargasException, ContenidoYaDescargadoException {
         if (descargado) {
