@@ -8,6 +8,7 @@ import utilidades.EstadisticasCreador;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Creador {
 
@@ -63,10 +64,12 @@ public class Creador {
     }
 
 
-    // Añade red social
+    // Añade red social (guardando la clave en minúsculas)
     public void agregarRedSocial(String red, String usuario) {
 
-        redesSociales.put(red, usuario);
+        if (red != null && !red.trim().isEmpty()) {
+            redesSociales.put(red.toLowerCase(), usuario);
+        }
     }
 
 
@@ -84,10 +87,9 @@ public class Creador {
     // Elimina episodio por ID
     public void eliminarEpisodio(String idEpisodio) throws EpisodioNoEncontradoException {
 
-        for (Podcast p : episodios) {
-
-            if (p.getId().equals(idEpisodio)) {
-                episodios.remove(p);
+        for (int i = 0; i < episodios.size(); i++) {
+            if (Objects.equals(episodios.get(i).getId(), idEpisodio)) {
+                episodios.remove(i);
                 return;
             }
         }
@@ -237,13 +239,13 @@ public class Creador {
 
         Creador otro = (Creador) obj;
 
-        return id.equals(otro.id);
+        return Objects.equals(id, otro.id);
     }
 
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 
 

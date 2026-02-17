@@ -5,6 +5,7 @@ import excepciones.contenido.DuracionInvalidaException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class Contenido {
 
@@ -161,12 +162,12 @@ public abstract class Contenido {
         }
         Contenido oontenido = (Contenido) obj;
 
-        return id.equals(oontenido.id);
+        return Objects.equals(id, oontenido.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 
 

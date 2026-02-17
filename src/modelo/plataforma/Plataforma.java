@@ -2,6 +2,7 @@ package modelo.plataforma;
 
 import enums.CategoriaPodcast;
 import enums.GeneroMusical;
+import enums.TipoAnuncio;
 import enums.TipoSuscripcion;
 import excepciones.artista.AlbumCompletoException;
 import excepciones.artista.AlbumYaExisteException;
@@ -60,6 +61,10 @@ public class Plataforma {
 
         albumes = new ArrayList<>();
         anuncios = new ArrayList<>();
+
+        // Agregar anuncios iniciales para que la plataforma tenga contenido publicitario disponible
+        anuncios.add(new Anuncio("Spotify", TipoAnuncio.AUDIO, 1000.0));
+        anuncios.add(new Anuncio("Nike", TipoAnuncio.BANNER, 500.0));
 
         recomendador = new RecomendadorIA();
     }

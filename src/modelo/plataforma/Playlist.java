@@ -10,6 +10,7 @@ import modelo.usuarios.Usuario;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Playlist {
@@ -78,7 +79,7 @@ public class Playlist {
         if (idContenido == null) return false;
 
         for (int i = 0; i < contenidos.size(); i++) {
-            if (contenidos.get(i).getId().equals(idContenido)) {
+            if (Objects.equals(contenidos.get(i).getId(), idContenido)) {
                 contenidos.remove(i);
                 return true;
             }

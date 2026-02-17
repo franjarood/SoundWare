@@ -6,6 +6,7 @@ import modelo.contenido.Cancion;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class Artista {
@@ -234,13 +235,13 @@ public class Artista {
 
         Artista otro = (Artista) obj;
 
-        return id.equals(otro.id);
+        return Objects.equals(id, otro.id);
     }
 
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 
 

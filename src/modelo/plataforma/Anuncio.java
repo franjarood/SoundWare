@@ -2,6 +2,8 @@ package modelo.plataforma;
 
 import enums.TipoAnuncio;
 
+import java.util.Objects;
+
 public class Anuncio {
 
     private String id;
@@ -18,6 +20,7 @@ public class Anuncio {
         this.empresa = empresa;
         this.tipo = tipo;
         this.presupuesto = presupuesto;
+        this.activo = true; // Los anuncios se crean activos por defecto
     }
 
     public Anuncio(String empresa, TipoAnuncio tipo, double presupuesto, String audioURL) {
@@ -25,6 +28,7 @@ public class Anuncio {
         this.tipo = tipo;
         this.presupuesto = presupuesto;
         this.audioURL = audioURL;
+        this.activo = true; // Los anuncios se crean activos por defecto
     }
 
 
@@ -168,13 +172,13 @@ public class Anuncio {
 
         Anuncio otro = (Anuncio) obj;
 
-        return id.equals(otro.id);
+        return Objects.equals(id, otro.id);
     }
 
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 
 

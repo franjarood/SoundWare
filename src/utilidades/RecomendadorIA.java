@@ -1,6 +1,8 @@
 package utilidades;
 
 import enums.AlgoritmoRecomendacion;
+import excepciones.recomendacion.HistorialVacioException;
+import excepciones.recomendacion.ModeloNoEntrenadoException;
 import excepciones.recomendacion.RecomendacionException;
 import interfaces.iRecomendador;
 import modelo.contenido.Contenido;
@@ -43,12 +45,14 @@ public class RecomendadorIA implements iRecomendador {
     @Override
     public ArrayList<Contenido> recomendar(Usuario usuario) throws RecomendacionException {
 
+        // Primero verificar que el modelo esté entrenado
         if (!modeloEntrenado) {
-            throw new RecomendacionException();
+            throw new ModeloNoEntrenadoException();
         }
 
+        // Luego verificar que el usuario tenga historial
         if (usuario == null || usuario.getHistorial().isEmpty()) {
-            throw new RecomendacionException();
+            throw new HistorialVacioException();
         }
 
         ArrayList<Contenido> recomendaciones = new ArrayList<>();

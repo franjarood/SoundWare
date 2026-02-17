@@ -29,6 +29,7 @@ public class UsuarioPremium extends Usuario {
         super(nombre, email, password, TipoSuscripcion.PREMIUM);
 
         descargados = new ArrayList<>();
+        maxDescargas = MAX_DESCARGAS_DEFAULT;
     }
 
     public UsuarioPremium(String nombre, String email, String password, TipoSuscripcion suscripcion)
@@ -37,6 +38,7 @@ public class UsuarioPremium extends Usuario {
         super(nombre, email, password, suscripcion);
 
         descargados = new ArrayList<>();
+        maxDescargas = MAX_DESCARGAS_DEFAULT;
     }
 
 
@@ -72,6 +74,7 @@ public class UsuarioPremium extends Usuario {
             throw new ContenidoYaDescargadoException();
         }
 
+        // Validar que no se supere el límite de descargas permitidas
         if (descargados.size() >= maxDescargas) {
             throw new LimiteDescargasException();
         }

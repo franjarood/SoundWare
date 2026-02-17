@@ -8,6 +8,7 @@ import modelo.contenido.Cancion;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 
 
@@ -102,7 +103,6 @@ public class Album {
         if (!canciones.remove(cancion)) {
             throw new CancionNoEncontradaException("La cancion no existe en el album");
         }
-        canciones.remove(cancion);
         cancion.setAlbum(null);
     }
 
@@ -264,13 +264,13 @@ public class Album {
 
         Album otro = (Album) obj;
 
-        return id.equals(otro.id);
+        return Objects.equals(id, otro.id);
     }
 
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
 
 
